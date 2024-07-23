@@ -12,7 +12,7 @@ export const authService = {
 }
 
 
-// REMOVE THIS
+// REMOVE THE LINES AFTER THE SECRET1 ||
 const cryptr = new Cryptr(process.env.SECRET1 || 'trellislife12321')
 
 async function login(username, password) {
@@ -39,8 +39,8 @@ async function signup(username, password, fullname, imgUrl) {
 }
 
 function getLoginToken(user) {
-    const userInfo = {_id : user._id, fullname: user.fullname, isAdmin: user.isAdmin}
-    return cryptr.encrypt(JSON.stringify(userInfo))    
+    const userInfo = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl }
+    return cryptr.encrypt(JSON.stringify(userInfo))
 }
 
 function validateToken(loginToken) {
@@ -48,7 +48,7 @@ function validateToken(loginToken) {
         const json = cryptr.decrypt(loginToken)
         const loggedinUser = JSON.parse(json)
         return loggedinUser
-    } catch(err) {
+    } catch (err) {
         console.log('Invalid login token')
     }
     return null
