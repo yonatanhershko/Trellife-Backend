@@ -19,7 +19,6 @@ async function query(filterBy = {}) {
 		var users = await collection.find(criteria).sort({ nickname: -1 }).toArray()
 		users = users.map(user => {
 			delete user.password
-			user.createdAt = user._id.getTimestamp()
 			return user
 		})
 		return users
@@ -89,7 +88,8 @@ async function add(user) {
 			username: user.username,
 			password: user.password,
 			fullname: user.fullname,
-			imgUrl: user.imgUrl
+			imgUrl: user.imgUrl,
+			favorites: []
 		}
 		const collection = await dbService.getCollection('user')
 		await collection.insertOne(userToAdd)

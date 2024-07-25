@@ -44,7 +44,6 @@ async function getById(boardId) {
     try {
         const collection = await dbService.getCollection('board')
         const board = await collection.findOne({ _id: ObjectId.createFromHexString(boardId) })
-        board.createdAt = board._id.getTimestamp()
         return board
     } catch (err) {
         logger.error(`while finding board ${boardId}`, err)
@@ -66,13 +65,11 @@ async function remove(boardId) {
 async function add(board, loggedinUser) {
     try {
         const defaultBoard = {
-            title: '',
+            title: board.title,
             isStarred: false,
             archivedAt: null,
+            style: board.style,
             createdBy: loggedinUser,
-            style: {
-                backgroundImage: 'https://images.unsplash.com/photo-1480497490787-505ec076689f?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            },
             labels: [
                 {
                     id: utilService.makeId(),
@@ -117,11 +114,11 @@ async function add(board, loggedinUser) {
             }],
         }
 
-        const boardWithDefaults = { ...defaultBoard, ...board };
+        console.log(defaultBoard)
 
         const collection = await dbService.getCollection('board')
-        await collection.insertOne(boardWithDefaults)
-        return boardWithDefaults
+        await collection.insertOne(defaultBoard)
+        return defaultBoard
     } catch (err) {
         logger.error('cannot insert board', err)
         throw err
@@ -130,9 +127,11 @@ async function add(board, loggedinUser) {
 
 async function update(board) {
     try {
+        console.log(board)
+
         const collection = await dbService.getCollection('board')
         const originalBoard = await collection.findOne({ _id: ObjectId.createFromHexString(board._id) })
-        
+
         if (!originalBoard) {
             throw new Error(`Board with id ${board._id} not found`);
         }
@@ -140,6 +139,7 @@ async function update(board) {
         const updatedBoard = { ...originalBoard, ...board };
         delete updatedBoard._id;
         await collection.updateOne({ _id: ObjectId.createFromHexString(board._id) }, { $set: updatedBoard })
+        console.log(board)
         return board
     } catch (err) {
         logger.error(`cannot update board:`, err)
