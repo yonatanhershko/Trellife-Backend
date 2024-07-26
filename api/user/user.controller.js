@@ -44,3 +44,14 @@ export async function updateUser(req, res) {
         res.status(500).send({ err: 'Failed to update user' })
     }
 }
+
+export async function updateUserFavorites(req, res) {
+    try {
+        const { boardId } = req.body
+        const result = await userService.removeBoardFromFavorites(boardId)
+        res.send(result)
+    } catch (err) {
+        console.error('Error removing board from favorites:', err);
+        res.status(500).json({ message: 'Error removing board from favorites' });
+    }
+}

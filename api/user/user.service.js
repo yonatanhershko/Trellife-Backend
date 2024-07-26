@@ -10,6 +10,7 @@ export const userService = {
 	remove,
 	update,
 	add,
+	removeBoardFromFavorites
 }
 
 async function query(filterBy = {}) {
@@ -67,6 +68,8 @@ async function update(user) {
 			_id: ObjectId.createFromHexString(user._id),
 			username: user.username,
 			fullname: user.fullname,
+			favorites: user.favorites,
+			imgUrl: user.imgUrl
 		}
 		const collection = await dbService.getCollection('user')
 		await collection.updateOne({ _id: userToSave._id }, { $set: userToSave })
@@ -99,6 +102,26 @@ async function add(user) {
 		throw err
 	}
 }
+
+async function removeBoardFromFavorites(boardId) {
+	try {
+		const collection = await dbService.getCollection('user')
+		const result = await collection.updateMany(
+			{ favorites: boardId },
+			{ $pull: { favorites: boardId } }
+		);
+
+		return {
+			message: 'Board removed from favorites successfully',
+			modifiedCount: result.modifiedCount
+		};
+	} catch (error) {
+		console.error('Error removing board from favorites:', error);
+		throw error
+	}
+}
+
+
 
 function _buildCriteria(filterBy) {
 	const criteria = {}
