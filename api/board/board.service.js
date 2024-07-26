@@ -55,7 +55,6 @@ async function remove(boardId) {
     try {
         const collection = await dbService.getCollection('board')
         const { deletedCount } = await collection.deleteOne({ _id: ObjectId.createFromHexString(boardId) })
-        console.log('works')
         return deletedCount
     } catch (err) {
         logger.error(`cannot remove board ${boardId}`, err)
