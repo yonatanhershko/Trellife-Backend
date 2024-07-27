@@ -11,9 +11,7 @@ export const authService = {
     validateToken
 }
 
-
-// REMOVE THE LINES AFTER THE SECRET1 ||
-const cryptr = new Cryptr(process.env.SECRET1 || 'trellislife12321')
+const cryptr = new Cryptr(process.env.SECRET1)
 
 async function login(username, password) {
     logger.debug(`auth.service - login with username: ${username}`)
