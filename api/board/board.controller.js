@@ -1,5 +1,6 @@
 import { boardService } from './board.service.js'
 import { logger } from '../../services/logger.service.js'
+import { socketService } from '../../services/socket.service.js'
 
 export async function getBoards(req, res) {
     try {
@@ -35,6 +36,7 @@ export async function addBoard(req, res) {
     try {
         const board = req.body
         const addedBoard = await boardService.add(board, loggedinUser)
+        socketService.broadcast({type:'board-added',data:addedBoard, userId: loggedinUser._id})
         res.json(addedBoard)
     } catch (err) {
         logger.error('Failed to add board', err)
