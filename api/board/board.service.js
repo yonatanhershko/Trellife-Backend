@@ -64,7 +64,6 @@ async function query(filterBy = {}, sortBy = {}) {
         }
 
         let boards = await collection.aggregate(pipeline).toArray()
-        console.log(boards)
         return boards
     } catch (err) {
         logger.error('cannot find boards', err)
