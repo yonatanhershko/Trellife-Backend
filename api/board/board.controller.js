@@ -36,7 +36,7 @@ export async function addBoard(req, res) {
     try {
         const board = req.body
         const addedBoard = await boardService.add(board, loggedinUser)
-        socketService.broadcast({type:'board-added',data:addedBoard, userId: loggedinUser._id})
+        socketService.broadcast({ type: 'board-added', data: addedBoard, userId: loggedinUser._id })
         res.json(addedBoard)
     } catch (err) {
         logger.error('Failed to add board', err)
@@ -45,9 +45,11 @@ export async function addBoard(req, res) {
 }
 
 export async function updateBoard(req, res) {
+    const { loggedinUser } = req
     try {
         const board = req.body
         const updatedBoard = await boardService.update(board)
+        socketService.broadcast({ type: 'watched-board-updated', data: updatedBoard, room: updatedBoard._id, userId: loggedinUser._id })
         res.json(updatedBoard)
     } catch (err) {
         logger.error('Failed to update board', err)
