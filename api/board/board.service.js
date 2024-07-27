@@ -21,18 +21,49 @@ async function query(filterBy = {}, sortBy = {}) {
 
         const collection = await dbService.getCollection('board')
 
-        let boards = await collection.find(criteria)
+        let pipeline = [
+            { $match: criteria },
+        ]
 
-        // Understand recent active logic and implement for sorting
-
-        // if (sortBy.field === 'recentlyActive') {
-        //     boards = await boards.sort({ name: sortBy.dir === 1 ? 1 : -1 })
-        // } else 
-        if (sortBy.field === 'alphabet') {
-            boards = await boards.sort({ title: sortBy.dir === 1 ? 1 : -1 })
+        if (sortBy.field === 'activity') {
+            pipeline.push(
+                {
+                    $addFields: {
+                        lastActivityDate: {
+                            $ifNull: [
+                                { $arrayElemAt: ["$activities.createdAt", -1] },
+                                new Date(0)  // Default date if activities array is empty
+                            ]
+                        }
+                    }
+                },
+                {
+                    $sort: {
+                        lastActivityDate: sortBy.dir === 1 ? 1 : -1
+                    }
+                }
+            )
+        } else if (sortBy.field === 'alphabet') {
+            pipeline.push(
+                {
+                    $addFields: {
+                        lowercaseTitle: { $toLower: "$title" }
+                    }
+                },
+                {
+                    $sort: {
+                        lowercaseTitle: sortBy.dir === 1 ? 1 : -1
+                    }
+                },
+                {
+                    $project: {
+                        lowercaseTitle: 0  // Remove the temporary field
+                    }
+                }
+            )
         }
 
-        boards = await boards.toArray()
+        let boards = await collection.aggregate(pipeline).toArray()
         return boards
     } catch (err) {
         logger.error('cannot find boards', err)
