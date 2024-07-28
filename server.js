@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
-
+import compression from 'compression';
 import { setupAsyncLocalStorage } from './middlewares/setupAls.middleware.js'
 
 
@@ -22,6 +22,9 @@ const server = http.createServer(app)
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static('public'))
+app.use(compression());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')))
