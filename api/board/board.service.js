@@ -145,8 +145,6 @@ async function add(board, loggedinUser) {
             }],
         }
 
-        console.log(defaultBoard)
-
         const collection = await dbService.getCollection('board')
         await collection.insertOne(defaultBoard)
         return defaultBoard
@@ -158,8 +156,6 @@ async function add(board, loggedinUser) {
 
 async function update(board) {
     try {
-        console.log(board)
-
         const collection = await dbService.getCollection('board')
         const originalBoard = await collection.findOne({ _id: ObjectId.createFromHexString(board._id) })
 
@@ -170,7 +166,6 @@ async function update(board) {
         const updatedBoard = { ...originalBoard, ...board };
         delete updatedBoard._id;
         await collection.updateOne({ _id: ObjectId.createFromHexString(board._id) }, { $set: updatedBoard })
-        console.log(board)
         return board
     } catch (err) {
         logger.error(`cannot update board:`, err)
