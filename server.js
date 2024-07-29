@@ -8,6 +8,10 @@ import { fileURLToPath } from 'url'
 import compression from 'compression';
 import { setupAsyncLocalStorage } from './middlewares/setupAls.middleware.js'
 
+import { OpenAI } from "openai";
+import bodyParser from 'body-parser'
+import { log } from 'console'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -30,7 +34,6 @@ app.use(compression());
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')))
-    console.log('__dirname: ', __dirname)
 } else {
     const corsOptions = {
         origin: [
@@ -63,10 +66,14 @@ app.use((err, req, res, next) => {
 app.all('*', setupAsyncLocalStorage)
 
 
+
 // routes
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/board', boardRoutes)
+
+
+
 
 setupSocketAPI(server)
 
@@ -83,4 +90,31 @@ const port = process.env.PORT || 3030
 
 server.listen(port, () => {
     logger.info('Server is running on port: ' + port)
+})
+
+
+const openai = new OpenAI({
+    // apiKey: process.env.API_KEY
+    // apiKey: 'sk-proj-9SVYfhF6Lad1P2EiD0orT3BlbkFJhy06AQKYEUc0sINcX2T2'
+    apiKey: 'sk-proj-U5t59sYU6ccz43fCZy3fT3BlbkFJIsZJkUPyR3w5Swq9xt1g'
+});
+
+app.use(bodyParser.json())
+
+app.post('/chat', async (req, res) => {
+    // const { prompt } = req.body
+    // const completion = await openai.chat.completions.create({
+    //     board: prompt,
+    //     model: "gpt-4o-mini",
+    //     max_tokens: 3000
+    //   });
+    const completion = await openai.chat.completions.create({
+        messages: [{"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Who won the world series in 2020?"},
+            {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+            {"role": "user", "content": "Where was it played?"}],
+            model: "gpt-4o-mini",
+        });
+          res.send(completion.choices[0].text)
+        // res.send(prompt)
 })
