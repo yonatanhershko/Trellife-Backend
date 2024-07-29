@@ -94,8 +94,7 @@ server.listen(port, () => {
 
 
 const openai = new OpenAI({
-    apiKey: process.env.API_KEY
-    
+    apiKey: process.env.API_KEY 
 });
 
 app.use(bodyParser.json())
