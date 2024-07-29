@@ -30,7 +30,6 @@ app.use(compression());
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')))
-    console.log('__dirname: ', __dirname)
 } else {
     const corsOptions = {
         origin: [
