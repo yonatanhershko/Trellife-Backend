@@ -35,6 +35,9 @@ openAiRoutes.post('/', log, async (req, res) => {
         try {
             const validJSON = fixInvalidJson(messageContent);
             const responseObject = JSON.parse(validJSON);
+            if (!isValidResponse(responseObject)) {
+                throw new Error('Response does not meet minimum requirements');
+            }
             res.json(responseObject);  // Use res.json to ensure the response is sent as a JSON object
         } catch (jsonError) {
             console.error('Invalid JSON:', messageContent);
@@ -48,38 +51,25 @@ openAiRoutes.post('/', log, async (req, res) => {
 
 function fixInvalidJson(jsonString) {
     try {
-        // Remove comments and backticks
-        jsonString = jsonString.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/```json|```/g, '');
-
-        // Add missing quotes around keys
+        // Remove comments and fix JSON issues
+        jsonString = jsonString.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '').trim();
         jsonString = jsonString.replace(/([{,])(\s*)([A-Za-z0-9_]+)(\s*):/g, '$1"$3":');
-
-        // Remove trailing commas
         jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
-
-        // Ensure boolean and null values are not quoted
-        jsonString = jsonString.replace(/"true"/g, 'true').replace(/"false"/g, 'false').replace(/"null"/g, 'null');
-
-        // Fix improperly escaped characters
-        jsonString = jsonString.replace(/\\([^nrtbf"\\/])/g, '\\\\$1');
-
-        // Ensure all keys are quoted properly
-        jsonString = jsonString.replace(/([{,])(\s*)([A-Za-z0-9_]+)(\s*):/g, '$1"$3":');
-
-        // Fix unescaped double quotes inside string values
-        jsonString = jsonString.replace(/"([^"]*?)":\s*"((?:[^"\\]|\\.)*?)"/g, (match, p1, p2) => {
-            return `"${p1}": "${p2.replace(/"/g, '\\"')}"`;
-        });
-
-        // Fix trailing commas inside arrays or objects
-        jsonString = jsonString.replace(/,\s*(?=[}\]])/g, '');
-
-        // Try parsing the fixed JSON string
         return jsonString;
     } catch (e) {
-        console.error("Fixing JSON failed:", e);
+        console.error("Error fixing JSON:", e);
         throw new Error("Unable to fix invalid JSON");
     }
 }
 
-export default openAiRoutes;
+function isValidResponse(response) {
+    if (!response.groups || response.groups.length < 4) {
+        return false;
+    }
+    for (const group of response.groups) {
+        if (!group.tasks || group.tasks.length < 4) {
+            return false;
+        }
+    }
+    return true;
+}

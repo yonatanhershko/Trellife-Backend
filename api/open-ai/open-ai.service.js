@@ -7,6 +7,7 @@ function getPrompt(title) {
         "title": "Project Title",
         "activities": [],
         "isStarred": false,
+        "createdBy": {},
         "style": {
             "background": "background-url"
         },
@@ -55,7 +56,7 @@ function getPrompt(title) {
                     }
                 ],
                 "style": {
-                    "backgroundColor": "#color",
+                    "backgroundColor": "#color", 
                     "isCollapse": false,
                 }
             }
