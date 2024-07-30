@@ -5,9 +5,9 @@
     "main": "server.js",
     "type": "module",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "node server.js",
         "server:dev": "nodemon server.js",
-        "server:prod": "cross-env NODE_ENV=production SECRET1=trellislife12321 node server.js"
+        "server:prod": "cross-env NODE_ENV=production node server.js"
     },
     "author": "Me",
     "license": "ISC",
