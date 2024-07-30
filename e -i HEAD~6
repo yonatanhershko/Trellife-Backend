@@ -1,0 +1,63 @@
+[33mb11c95b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Bug fix
+[33m4969434[m Bug fix
+[33m0fada4d[m Bug Fix
+[33mf83ef46[m Enforce .gitignore
+[33m8827dde[m Remove .env file from Git tracking
+[33mf9a6972[m Add api
+[33mef9b422[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m8103720[m Remove .env file from Git tracking
+[33m6135ed2[m Delete .env
+[33mcd34327[m your message
+[33m46bea55[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m9468f58[m Add env
+[33md97893f[m test
+[33m17aa1d1[m your message
+[33m71b00a6[m remove .env
+[33m6a0e6d4[m Revert "Sync add env"
+[33mbd12a6b[m Remove .env file from repository
+[33m9a1269d[m fix gitignore
+[33mb0f4247[m Implement nodenv, hide api keys from you hackers
+[33mc3c692f[m Organize open ai API KEY
+[33mc0d201d[m Organize open ai code
+[33m350296e[m Sync add env
+[33m5a90400[m Organize open ai API KEY
+[33m1cb27b9[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m4420885[m Organize open ai code
+[33mebcf382[m Shut off open ai for a test
+[33m9bd6298[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33mdda15d6[m New build - fix css hover, only through JS now
+[33m7a39a81[m Develop AI
+[33m7643c5b[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33mabadf27[m Develop AI
+[33md8b5d1d[m Develop AI
+[33md8774e9[m Remove console log
+[33me4831aa[m Implement potential server fix
+[33mcf53a06[m New build - some more responsiveness
+[33ma0ca0ca[m New build - fix some responsiveness for task details
+[33mbfdf640[m New build - fix labels
+[33m8f3a626[m New build - fix board create in frontend
+[33m633dc87[m new build
+[33m4f68c31[m New build
+[33mfa83440[m New build
+[33mf8c3799[m New build
+[33mb60bb00[m Implement .env
+[33m64e4b21[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m6e3a787[m Implement icons and run front build
+[33m8ba0fd5[m Add update watched board socket
+[33mb255e02[m Add socket service base
+[33m4d9bdcf[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33mb971fe3[m Add openai library
+[33m9191607[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m496a89e[m Implement sorting logic
+[33m761bcc2[m Implement sorting logic
+[33me6f663c[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m95174dd[m Merge branch 'main' of https://github.com/Dolevy97/backend
+[33m6607d6d[m Add config to git ignore
+[33m06af505[m add config to .gitignore
+[33mec7da54[m Implement remove board from favorites when deleted
+[33m488ac1d[m Add delete route
+[33md806e85[m Backend extra changes
+[33m937dcac[m your message
+[33ma48394f[m Implement full board crud
+[33maeee9d1[m Implement full board crud
+[33m3715c74[m Implement basic working backend
