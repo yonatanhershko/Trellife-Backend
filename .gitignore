@@ -1,5 +1,6 @@
 node_modules
 logs
-api.http
 config
+api.http
+.gitignore
 .env
