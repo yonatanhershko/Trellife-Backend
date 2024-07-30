@@ -12,10 +12,10 @@ export const openAiRoutes = express.Router()
 openAiRoutes.use(requireAuth)
 openAiRoutes.use(bodyParser.json());
 
-const API_KEY = ''
+const OPEN_AI_API_KEY = process.env.API_KEY
 
 const openai = new OpenAI({
-    apiKey: API_KEY,
+    apiKey: OPEN_AI_API_KEY,
 });
 
 
