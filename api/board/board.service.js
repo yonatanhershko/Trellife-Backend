@@ -96,12 +96,12 @@ async function remove(boardId) {
 async function add(board, loggedinUser) {
     try {
         const defaultBoard = {
-            title: board.title,
+            title: board.title || `Project's Title`,
             isStarred: false,
-            archivedAt: null,
+            archivedAt:  null,
             style: board.style,
             createdBy: loggedinUser,
-            labels: [
+            labels: board?.labels || [
                 {
                     id: utilService.makeId(),
                     title: '',
@@ -134,7 +134,7 @@ async function add(board, loggedinUser) {
                 }
             ],
             members: [loggedinUser],
-            groups: [],
+            groups: board?.groups || [],
             activities: [{
                 id: utilService.makeId(),
                 title: 'create board',
