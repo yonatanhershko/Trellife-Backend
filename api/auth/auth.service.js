@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 
 import { userService } from '../user/user.service.js'
 import { logger } from '../../services/logger.service.js'
+import '../../config.js';
 
 export const authService = {
     signup,
@@ -11,7 +12,7 @@ export const authService = {
     validateToken
 }
 
-const cryptr = new Cryptr(process.env.SECRET1 || 'trellislife12321')
+const cryptr = new Cryptr(process.env.SECRET1)
 
 async function login(username, password) {
     logger.debug(`auth.service - login with username: ${username}`)

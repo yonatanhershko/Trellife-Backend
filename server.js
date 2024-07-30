@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url';
 import compression from 'compression';
 import { setupAsyncLocalStorage } from './middlewares/setupAls.middleware.js';
 import { logger } from './services/logger.service.js';
+import './config.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

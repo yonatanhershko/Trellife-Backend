@@ -1,10 +1,11 @@
 import express from 'express'
 
-import { OpenAI } from 'openai';
 import bodyParser from 'body-parser';
 import { requireAuth } from '../../middlewares/requireAuth.middleware.js'
 import { log } from '../../middlewares/logger.middleware.js'
 import { openAiService } from './open-ai.service.js';
+import { OpenAI } from 'openai';
+import '../../config.js';
 
 export const openAiRoutes = express.Router()
 
@@ -12,12 +13,9 @@ export const openAiRoutes = express.Router()
 openAiRoutes.use(requireAuth)
 openAiRoutes.use(bodyParser.json());
 
-const OPEN_AI_API_KEY = process.env.API_KEY
-
 const openai = new OpenAI({
-    apiKey: OPEN_AI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
 });
-
 
 openAiRoutes.post('/', log,async (req, res) => {
     try {
