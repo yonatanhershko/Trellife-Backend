@@ -1,6 +1,0 @@
-node_modules
-logs
-config
-api.http
-.gitignore
-.env
