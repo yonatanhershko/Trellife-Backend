@@ -8,7 +8,7 @@ import '../../config.js';
 
 export const openAiRoutes = express.Router();
 
-// middleware that is specific to this router
+// Middleware specific to this router
 openAiRoutes.use(requireAuth);
 openAiRoutes.use(bodyParser.json());
 
@@ -21,12 +21,12 @@ openAiRoutes.post('/', log, async (req, res) => {
         const { title } = req.body;
         const prompt = openAiService.getPrompt(title);
         const completion = await openai.chat.completions.create({
-            model: 'gpt-4',
+            model: 'gpt-4-turbo',
             messages: [
                 { role: 'system', content: 'You are a helpful assistant.' },
                 { role: 'user', content: prompt }
             ],
-            max_tokens: 3000,
+            max_tokens: 4000,
         });
 
         const messageContent = completion.choices[0].message.content;
@@ -36,7 +36,7 @@ openAiRoutes.post('/', log, async (req, res) => {
             const validJSON = fixInvalidJson(messageContent);
             const responseObject = JSON.parse(validJSON);
             if (!isValidResponse(responseObject)) {
-                throw new Error('Response does not meet minimum requirements');
+                console.warn('Response does not meet minimum requirements');
             }
             res.json(responseObject);  // Use res.json to ensure the response is sent as a JSON object
         } catch (jsonError) {
@@ -66,9 +66,18 @@ function isValidResponse(response) {
     if (!response.groups || response.groups.length < 4) {
         return false;
     }
+    let hasBackgroundImage = false;
     for (const group of response.groups) {
         if (!group.tasks || group.tasks.length < 4) {
             return false;
+        }
+        for (const task of group.tasks) {
+            if (task.style && task.style.backgroundImage) {
+                if (hasBackgroundImage) {
+                    return false;
+                }
+                hasBackgroundImage = true;
+            }
         }
     }
     return true;

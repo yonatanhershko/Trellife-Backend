@@ -96,7 +96,7 @@ function getPrompt(title) {
 9. Each task MUST have:
    - A description (can be an empty string)
    - A dueDate (if present, MUST be between 1723248000000 and 1725158400000, otherwise null)
-   - A style object with isFull (boolean), and either backgroundImage (task's title) or backgroundColor (from ${taskColors.join(', ')}), or null if neither
+   - A style object with isFull (boolean), and either backgroundImage (task's title, only one task in total can have this) or backgroundColor (from ${taskColors.join(', ')}), or null if neither
    - Empty arrays for attachments and membersIds
    - An empty object for byMember
    - labelsIds referencing the board's labels
