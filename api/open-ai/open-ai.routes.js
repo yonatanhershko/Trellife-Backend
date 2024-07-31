@@ -21,31 +21,38 @@ openAiRoutes.post('/', log, async (req, res) => {
         const { title } = req.body;
         const prompt = openAiService.getPrompt(title);
         const completion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4-turbo',
             messages: [
                 { role: 'system', content: 'You are a helpful assistant.' },
                 { role: 'user', content: prompt }
             ],
-            max_tokens: 3000,
+            max_tokens: 3800,
         });
 
         const messageContent = completion.choices[0].message.content;
 
-        // Validate if the response is a valid JSON
         try {
             const validJSON = fixInvalidJson(messageContent);
             const responseObject = JSON.parse(validJSON);
             if (!isValidResponse(responseObject)) {
                 console.warn('Response does not meet minimum requirements');
             }
-            res.json(responseObject);  // Use res.json to ensure the response is sent as a JSON object
+            res.json(responseObject);  // Send as JSON response
         } catch (jsonError) {
             console.error('Invalid JSON:', messageContent);
-            res.status(500).send('Invalid JSON response from OpenAI');
+            res.status(500).json({
+                error: 'Invalid JSON response from OpenAI',
+                details: jsonError.message,
+                content: messageContent
+            });
         }
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({
+            error: 'Internal Server Error',
+            details: error.message,
+            stack: error.stack
+        });
     }
 });
 
