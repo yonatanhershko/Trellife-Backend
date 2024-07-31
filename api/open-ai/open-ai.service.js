@@ -1,4 +1,4 @@
-export const openAiService = {
+export const openAiService ={
     getPrompt
 }
 
@@ -26,9 +26,13 @@ function getPrompt(title) {
                         "description": "Task description",
                         "checklists": [
                             {
-                                "id": "todo-id",
-                                "title": "Todo title",
-                                "isDone": false
+                                "id": "checklist-id",
+                                "title": "Checklist Title",
+                                "todos": {
+                                    "id": "todo-id",
+                                    "title": "Todo title",
+                                    "isDone": false
+                                }
                             }
                         ],
                         "labelsIds": ["label-id"],
@@ -78,18 +82,20 @@ function getPrompt(title) {
    - A dueDate key (if present, must be between 1723248000000 and 1735689600000, otherwise null).
    - A style object: with backgroundColor (from ${taskColors.join(', ')} for important tasks, and **one task must have instead of backgroundColor a backgroundImage** which MUST be the most meaningful word or two words from the task's title that relates the most to the project's title.
    - labelsIds referencing the board's labels.
-   - At least 3 tasks must have a non-empty checklist with 2 todos, and all todos MUST have isDone set to false.
+   - **At least 3 tasks must have a non-empty checklist with 2 todos, and all todos MUST have isDone set to false. At least one task in the entire project must contain a checklist.**
 6. Each group must have a style object with:
    - backgroundColor (from ${groupColors.join(', ')} or null).
    - isCollapse (false).
 
-Ensure that no other keys with empty values (empty strings, empty arrays, empty objects, null values) are included in the response. Remove hardcoded keys like isStarred if they are false.
+**Ensure that no other keys with empty values (empty strings, empty arrays, empty objects, null values) are included in the response. Remove keys their value is hardcoded or returns the exact the same value each time.**
 
-Ensure that at least one task in the project has a style with a backgroundImage.
+**Ensure that at least one task in the project has a style with a backgroundImage. This is a critical requirement**
 
-Ensure that at least one task in the project has a checklist with some todos.
+**Ensure that at least three tasks in the project have a checklist with some todos. This is a critical requirement.**
 
-Ensure that all titles, descriptions, and other text fields are meaningful and relevant to the project subject "${title}".
+**Ensure that at least three tasks in the project have a dueDate with a the value of a timestamp between 1723248000000 and 1735689600000. This is a critical requirement.**
+
+**Ensure that all titles, descriptions, and other text fields are meaningful and relevant to the project subject "${title}".
 
 Failure to meet ANY of these requirements will result in an incorrect response. Double-check your JSON before returning it.
 

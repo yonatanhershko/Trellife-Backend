@@ -58,7 +58,6 @@ openAiRoutes.post('/', log, async (req, res) => {
 
 function fixInvalidJson(jsonString) {
     try {
-        // Remove comments and fix JSON issues
         jsonString = jsonString.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '').trim();
         jsonString = jsonString.replace(/([{,])(\s*)([A-Za-z0-9_]+)(\s*):/g, '$1"$3":');
         jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
@@ -73,10 +72,28 @@ function isValidResponse(response) {
     if (!response.groups || response.groups.length < 4) {
         return false;
     }
+
+    let hasChecklist = false;
+
     for (const group of response.groups) {
         if (!group.tasks || group.tasks.length < 4) {
             return false;
         }
+
+        for (const task of group.tasks) {
+            if (task.checklists && task.checklists.length > 0) {
+                hasChecklist = true;
+                break;
+            }
+        }
+
+        if (hasChecklist) break;
     }
+
+    if (!hasChecklist) {
+        console.warn('No task contains a checklist.');
+        return false;
+    }
+
     return true;
 }
