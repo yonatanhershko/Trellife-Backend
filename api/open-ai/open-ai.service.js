@@ -5,9 +5,6 @@ export const openAiService = {
 function getPrompt(title) {
     const structure = {
         "title": "Project Title",
-        "activities": [],
-        "isStarred": false,
-        "createdBy": {},
         "style": {
             "background": "background-url"
         },
@@ -18,7 +15,6 @@ function getPrompt(title) {
                 "color": "#color"
             }
         ],
-        "members": [],
         "groups": [
             {
                 "id": "group-id",
@@ -27,37 +23,20 @@ function getPrompt(title) {
                     {
                         "id": "task-id",
                         "title": "Task Title",
-                        "description": "Task description",
-                        "isDone": false,
-                        "priority": "Priority Level",
-                        "checklists": [
-                            {
-                                "id": "checklist-id",
-                                "title": "Checklist Title",
-                                "todos": [
-                                    {
-                                        "id": "todo-id",
-                                        "title": "Todo Title",
-                                        "isDone": false
-                                    }
-                                ]
-                            }
-                        ],
-                        "membersIds": [],
+                        "description": "",
+                        "checklists": [],
                         "labelsIds": ["label-id"],
                         "byMember": {},
                         "style": {
-                            "isFull": true,
-                            "backgroundImage": "task-title",
-                            "backgroundColor": "#color"
+                            "isFull": false,
+                            "backgroundColor": "#color",
+                            "backgroundImage": "background-url"
                         },
-                        "attachments": [],
-                        "dueDate": null,
+                        "dueDate": null
                     }
                 ],
                 "style": {
-                    "backgroundColor": "#color", 
-                    "isCollapse": false,
+                    "backgroundColor": "#color",
                 }
             }
         ]
@@ -82,28 +61,24 @@ function getPrompt(title) {
         '#206e4e', '#7f5f02', '#a64700', '#ae2e24', '#5e4db2',
         '#0055cc', '#1f6a83', '#4d6b1f', '#943d73', '#596773'
     ];
-    
+
     const prompt = `Create a detailed board JSON for a "${title}" project. Ensure all titles, descriptions, and content are meaningful and related to the subject of "${title}". Strictly adhere to these requirements:
 
-1. The project object should not have an _id key and no createdBy key.
-2. The project object must have a createdBy key which its value is an empty object.
-3. MUST include an empty array for 'activities'.
-4. The project's style.background MUST be the most meaningful word from the project's title.
-5. MUST include at least 4 labels with colors from: ${labelColors.join(', ')}.
-6. MUST include at least 4 groups.
-7. Each group MUST contain between 4 to 12 tasks. **Every group should have at least 4 tasks**.
-8. At least 6 tasks MUST have detailed checklists with 4-8 todos. All todos MUST have isDone set to false.
-9. Each task MUST have:
-   - A description (can be an empty string)
-   - A dueDate (if present, MUST be between 1723248000000 and 1725158400000, otherwise null)
-   - A style object with isFull (boolean), and either backgroundImage (task's title, only one task in total can have this) or backgroundColor (from ${taskColors.join(', ')}), or null if neither
-   - Empty arrays for attachments and membersIds
-   - An empty object for byMember
-   - labelsIds referencing the board's labels
-10. Each group MUST have a style object with:
-   - backgroundColor (from ${groupColors.join(', ')} or null)
-   - isCollapse (false)
-11. The board MUST have an empty array for members.
+1. The project's style.background MUST be the most meaningful word or two words from the project's title.
+2. The project must include at least 3 labels with colors from: ${labelColors.join(', ')}.
+3. The project must include at least 4 groups.
+4. Each group must contain between 4 to 12 tasks. **Every group must have at least 4 tasks**.
+5. Each task must have:
+   - A description key with an empty string as its value, except 3 tasks which must have short descriptions.
+   - A dueDate key (if present, must be between 1723248000000 and 1735689600000, otherwise null).
+   - A style object: with backgroundColor (from ${taskColors.join(', ')} for important tasks, and **one task must have a backgroundImage** which MUST be the most meaningful word or two words from the task's title that relates the most to the project's title.
+   - labelsIds referencing the board's labels.
+   - At least 3 tasks must have a non-empty checklist with 2 todos, and all todos MUST have isDone set to false.
+6. Each group must have a style object with:
+   - backgroundColor (from ${groupColors.join(', ')} or null).
+   - isCollapse (false).
+
+Ensure that no other keys with empty values (empty strings, empty arrays, empty objects, null values) are included in the response. Remove hardcoded keys like isStarred if they are false.
 
 Ensure that all titles, descriptions, and other text fields are meaningful and relevant to the project subject "${title}".
 

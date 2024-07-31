@@ -21,12 +21,12 @@ openAiRoutes.post('/', log, async (req, res) => {
         const { title } = req.body;
         const prompt = openAiService.getPrompt(title);
         const completion = await openai.chat.completions.create({
-            model: 'gpt-4-turbo',
+            model: 'gpt-3.5-turbo',
             messages: [
                 { role: 'system', content: 'You are a helpful assistant.' },
                 { role: 'user', content: prompt }
             ],
-            max_tokens: 4000,
+            max_tokens: 3000,
         });
 
         const messageContent = completion.choices[0].message.content;
@@ -66,18 +66,9 @@ function isValidResponse(response) {
     if (!response.groups || response.groups.length < 4) {
         return false;
     }
-    let hasBackgroundImage = false;
     for (const group of response.groups) {
         if (!group.tasks || group.tasks.length < 4) {
             return false;
-        }
-        for (const task of group.tasks) {
-            if (task.style && task.style.backgroundImage) {
-                if (hasBackgroundImage) {
-                    return false;
-                }
-                hasBackgroundImage = true;
-            }
         }
     }
     return true;
