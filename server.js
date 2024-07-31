@@ -25,18 +25,21 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static('public'));
 app.use(compression());
 
+const corsOptions = {
+    origin: [
+        'http://127.0.0.1:5173',
+        'http://localhost:5173',
+        'http://127.0.0.1:3000',
+        'http://localhost:3000',
+        'https://trellife.onrender.com',
+    ],
+    credentials: true,
+}
+
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, 'public')));
+    app.use(express.static(path.resolve(__dirname, 'public')))
+    app.use(cors(corsOptions))
 } else {
-    const corsOptions = {
-        origin: [
-            'http://127.0.0.1:5173',
-            'http://localhost:5173',
-            'http://127.0.0.1:3000',
-            'http://localhost:3000',
-        ],
-        credentials: true,
-    };
     app.use(cors(corsOptions));
 }
 
@@ -47,6 +50,7 @@ import { boardRoutes } from './api/board/board.routes.js';
 import { openAiRoutes } from './api/open-ai/open-ai.routes.js';
 import { setupSocketAPI } from './services/socket.service.js';
 
+
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 413) {
         console.error('Request entity too large:', err);
@@ -56,6 +60,7 @@ app.use((err, req, res, next) => {
 });
 
 app.all('*', setupAsyncLocalStorage);
+
 
 // Routes
 app.use('/api/auth', authRoutes);
