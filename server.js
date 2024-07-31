@@ -70,6 +70,11 @@ app.use('/api/open-ai', openAiRoutes);
 
 setupSocketAPI(server);
 
+app.use((req, res, next) => {
+    console.log(`Unmatched route: ${req.method} ${req.url}`);
+    next();
+});
+
 // Make every unmatched server-side-route fall back to index.html
 app.get('/**', (req, res) => {
     res.sendFile(path.resolve('public/index.html'));
