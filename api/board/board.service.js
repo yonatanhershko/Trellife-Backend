@@ -32,7 +32,7 @@ async function query(filterBy = {}, sortBy = {}) {
                         lastActivityDate: {
                             $ifNull: [
                                 { $arrayElemAt: ["$activities.createdAt", -1] },
-                                new Date(0)  // Default date if activities array is empty
+                                new Date(0)
                             ]
                         }
                     }
@@ -57,7 +57,7 @@ async function query(filterBy = {}, sortBy = {}) {
                 },
                 {
                     $project: {
-                        lowercaseTitle: 0  // Remove the temporary field
+                        lowercaseTitle: 0
                     }
                 }
             )
