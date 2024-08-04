@@ -58,10 +58,19 @@ export async function updateBoard(req, res) {
 }
 
 export async function removeBoard(req, res) {
+    const { loggedinUser } = req
     try {
         const boardId = req.params.id
+        const board = await boardService.getById(boardId)
+        if (!board) {
+            return res.status(404).send({ err: 'Board not found' })
+        }
+        if (board.createdBy._id !== loggedinUser._id) {
+            return res.status(403).send({ err: 'Access denied. You are not the creator of this board.' })
+        }
+
         const deletedCount = await boardService.remove(boardId)
-        res.send(`${deletedCount} boards removed`)
+        res.send(`${deletedCount} board removed`)
     } catch (err) {
         logger.error('Failed to remove board', err)
         res.status(500).send({ err: 'Failed to remove board' })
