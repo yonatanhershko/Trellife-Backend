@@ -49,9 +49,7 @@ export async function updateBoard(req, res) {
     try {
         const board = req.body
         const updatedBoard = await boardService.update(board)
-        // socketService.broadcast({ type: 'watched-board-updated', data: updatedBoard, room: updatedBoard._id, userId: loggedinUser._id })
-        // For presentaion - switch back when done
-        socketService.broadcast({ type: 'watched-board-updated', data: updatedBoard, room: updatedBoard._id})
+        socketService.broadcast({ type: 'watched-board-updated', data: updatedBoard, room: updatedBoard._id, userId: loggedinUser._id })
         res.json(updatedBoard)
     } catch (err) {
         logger.error('Failed to update board', err)
