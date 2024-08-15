@@ -1,7 +1,7 @@
-<h1>Trellife🌳</h1>
+<h1>Trellife a Trello clone using React, Node.js & MongoDB🌳</h1>
 
-A full-stack web application that replicates the core functionalities of trello app, developed by Yonatan Hershko, Dolev Levy and Jonathan Dolan.
-
+A full-stack web application that replicates the core functionalities of trello app (built in 12 days!), developed by Yonatan Hershko, Dolev Levy and Jonathan Dolan.
+[Check it here⭐](https://trellife.onrender.com/)
 
 
 https://github.com/user-attachments/assets/b56e52a5-0669-4bfd-ba4a-e46e7d00a1a3
@@ -25,9 +25,48 @@ Built with :
 - Create a project template with tasks by using Chat Trellife an AI generated template with our connection to OpenAI API.
 - User login/signup system with auth checks.
 
+## Technologies
+
+The technology stack we used was MERN - MongoDB, Express, React, Node.js.
+The app uses webSockets to update the board in real-time.
+The API calls to the backend are done with the REST API method , and we used middlewares to authenticate and authorize actions.
+
+We have used many thirs side libraries for many goals, such as the Chat GPT api, Unsplash, D&D and more.
+The layout and pixel-perfect were made with Sass (functions, mixins, variables). 
+
+## Getting started
+
+Head to the repository on top and clone the project or download the files.
+
+```
+git clone https:https://github.com/yonatanhershko/Trellife.git
+```
+
+Enter the backend folder and make sure you have node_modules installed. After that we will initiate the server with 'npm start':
+
+```
+cd backend
+npm i 
+npm run start
+```
+
+You shuold get a console ouput that the server is up and running at port 3030.
+Enter the frontend folder and repeat the same process.
+
+```
+cd frontend
+npm i 
+npm run start
+```
+
+You shuold get a console ouput that the server is up and running at localhost:3030.
+
+That's it! The App should be opened automatically, enjoy!
+
+
 ## Demo
 
-[Check it Out⭐](https://trellife.onrender.com/)
+[Check it here⭐](https://trellife.onrender.com/)
 
 
 ## Contributors
